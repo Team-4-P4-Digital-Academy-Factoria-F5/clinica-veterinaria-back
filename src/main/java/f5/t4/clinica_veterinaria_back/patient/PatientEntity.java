@@ -24,6 +24,7 @@ public class PatientEntity {
     private String id_patient;
 
     private String name;
+    private String image;
     private int age;
     private String family;
     private String breed;
