@@ -1,8 +1,6 @@
-package f5.t4.clinica_veterinaria_back;
+package f5.t4.clinica_veterinaria_back.patient;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import f5.t4.clinica_veterinaria_back.patient.PatientEntity;
 
 public interface PatientRepository extends JpaRepository<PatientEntity, String>{
 
