@@ -1,4 +1,6 @@
 package f5.t4.clinica_veterinaria_back.user;
+import java.util.Set;
+
 import f5.t4.clinica_veterinaria_back.role.RoleEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,9 +16,10 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dni;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
-    private RoleEntity role;  
+    @ManyToMany
+    @JoinTable(name = "roles_users", joinColumns = @JoinColumn(name = "dni"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<RoleEntity> roles;
+    
     private String name;
     private String last_name;
     private String phone;

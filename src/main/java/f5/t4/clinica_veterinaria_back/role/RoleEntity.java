@@ -1,6 +1,9 @@
 package f5.t4.clinica_veterinaria_back.role;
+import java.util.Set;
+
 import jakarta.persistence.*;
 import lombok.*;
+import f5.t4.clinica_veterinaria_back.user.UserEntity;
 
 @Entity
 @Table(name = "roles")
@@ -16,5 +19,8 @@ public class RoleEntity {
 
     @Column(unique = true)
     private String name;
+
+    @ManyToMany(mappedBy = "roles")
+    private Set<UserEntity> users;
 
 }
