@@ -14,14 +14,19 @@ import lombok.*;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long dni;
+    private String id_user;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "roles_users", joinColumns = @JoinColumn(name = "dni"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> roles;
-    
+
+    private String email;
+    private String password;
+
+    @Column(nullable = false, unique = true)
+    private String dni;
     private String name;
     private String last_name;
     private String phone;
-    private String email;
+
 }
