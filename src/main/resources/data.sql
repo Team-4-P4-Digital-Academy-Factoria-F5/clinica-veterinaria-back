@@ -1,2 +1,2 @@
-INSERT INTO roles (name) VALUES ('ROLE_ADMIN');
-INSERT INTO roles (name) VALUES ('ROLE_CLIENT');
+INSERT INTO roles (id_role, name) VALUES (default,'ROLE_ADMIN');
+INSERT INTO roles (id_role,name) VALUES (default. 'ROLE_CLIENT');
