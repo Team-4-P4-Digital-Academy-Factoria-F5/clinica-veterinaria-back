@@ -20,8 +20,12 @@ public class UserEntity {
     @JoinTable(name = "roles_users", joinColumns = @JoinColumn(name = "dni"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> roles;
 
-    private String email;
+    @Column(nullable = false, unique = true, length = 100)
+    private String username; 
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false, unique = true, length = 150)
+    private String email; 
 
     @Column(nullable = false, unique = true)
     private String dni;
