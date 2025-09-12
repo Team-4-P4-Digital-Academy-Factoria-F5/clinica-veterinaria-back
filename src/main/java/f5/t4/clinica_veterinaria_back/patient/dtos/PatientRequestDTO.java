@@ -7,6 +7,6 @@ int age,
 String family,
 String breed,
 String sex,
-String dni_client) {
+Long user_id) {
 
 }

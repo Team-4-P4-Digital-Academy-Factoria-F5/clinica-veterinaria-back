@@ -14,7 +14,7 @@ public class PatientMapper {
         patient.setFamily(dtoRequest.family());
         patient.setBreed(dtoRequest.breed());
         patient.setSex(dtoRequest.sex());
-        patient.setDni_client(dtoRequest.dni_client());
+        patient.setUser_id(dtoRequest.user_id());
 
         return patient;
     }
@@ -28,7 +28,7 @@ public class PatientMapper {
             entity.getFamily(),
             entity.getBreed(),
             entity.getSex(),
-            entity.getDni_client()
+            entity.getUser_id()
         );
 
         return dtoResponse;

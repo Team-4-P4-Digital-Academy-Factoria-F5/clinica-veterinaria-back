@@ -11,6 +11,6 @@ public interface InterfacePatientService extends IService<PatientResponseDTO, St
     List<PatientResponseDTO> getPatientEntities();
     PatientResponseDTO createEntity(PatientRequestDTO patientRequestDTO);
     PatientResponseDTO getById(String id);
-    PatientResponseDTO updateEntity(String id);
+    PatientResponseDTO updateEntity(String id, PatientRequestDTO patientRequestDTO);
     PatientResponseDTO deleteEntity();
 }

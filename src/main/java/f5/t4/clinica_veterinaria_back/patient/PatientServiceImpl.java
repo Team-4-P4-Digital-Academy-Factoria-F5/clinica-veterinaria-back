@@ -39,11 +39,24 @@ public class PatientServiceImpl implements InterfacePatientService {
         return PatientMapper.toDTO(patient);
     }
 
-    /* @Override
-    public PatientResponseDTO updateEntity() {
-        PatientEntity patient = 
+    @Override
+    public PatientResponseDTO updateEntity(String id, PatientRequestDTO patientRequestDTO) {
+        PatientEntity patient = repository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Paciente no encontrado con id: " + id));
 
-    } */
+        // Actualizar los campos necesarios
+        entity.setName(patientRequestDTO.name());
+        entity.setImage(patientRequestDTO.image());
+        entity.setAge(patientRequestDTO.age());
+        entity.setFamily(patientRequestDTO.family());
+        entity.setBreed(patientRequestDTO.breed());
+        entity.setSex(patientRequestDTO.sex());
+        entity.setDni_client(patientRequestDTO.user_id());
+
+        PatientEntity updatedEntity = repository.save(entity);
+        return PatientMapper.toDTO(updatedEntity);
+
+    }
 
 
     

@@ -29,6 +29,6 @@ public class PatientEntity {
     private String family;
     private String breed;
     private String sex;
-    private String dni_client;
+    private Long user_id; // user_id
     
 }
