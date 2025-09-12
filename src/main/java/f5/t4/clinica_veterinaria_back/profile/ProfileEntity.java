@@ -21,13 +21,16 @@ public class ProfileEntity {
     private String dni;
 
     @Column(nullable = false, length = 150)
-    private String fullName;
+    private String name;
+
+    @Column(nullable = false, length = 150)
+    private String firstSurname;
+
+    @Column(nullable = false, length = 150)
+    private String secondSurname;
 
     @Column(nullable = false, length = 20)
     private String phoneNumber;
-
-    @Column(nullable = false, unique = true, length = 150)
-    private String email; 
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
