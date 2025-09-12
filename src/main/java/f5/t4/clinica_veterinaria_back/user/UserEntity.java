@@ -14,7 +14,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dni;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private RoleEntity role;  
     private String name;
