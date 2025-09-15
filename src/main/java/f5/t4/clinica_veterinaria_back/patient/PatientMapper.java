@@ -15,7 +15,7 @@ public class PatientMapper {
         patient.setFamily(dtoRequest.family());
         patient.setBreed(dtoRequest.breed());
         patient.setSex(dtoRequest.sex());
-        //patient.setTutor(patient);(dtoRequest.user_id());
+        patient.setTutor(dtoRequest.tutor());
 
         return patient;
     }
@@ -30,7 +30,7 @@ public class PatientMapper {
             entity.getFamily(),
             entity.getBreed(),
             entity.getSex(),
-            entity.getUser_id()
+            entity.getTutor()
         );
 
         return dtoResponse;
