@@ -35,7 +35,7 @@ public class UserEntity {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private ProfileEntity profile;
 
-    //Relación con Pacientes, que nos permite eliminarlos en cascada cuando borramos el user correspondiente,     private UserEntity tutor; en pacients
+    //Relación con Pacientes, que nos permite eliminarlos en cascada cuando borramos el user correspondiente,    
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PatientEntity> patients = new HashSet<>();
 }

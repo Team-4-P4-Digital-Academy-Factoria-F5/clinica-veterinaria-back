@@ -41,7 +41,7 @@ public class SecurityConfiguration {
                 .formLogin(form -> form.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("h2-console/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, endpoint + "users/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, endpoint + "/user/register").permitAll()
                         .requestMatchers(endpoint + "/login").hasAnyRole("USER", "ADMIN") // principio de mínimos privilegios
                         .anyRequest().authenticated())
                 .httpBasic(withDefaults());
@@ -56,4 +56,7 @@ public class SecurityConfiguration {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    
 }
+
