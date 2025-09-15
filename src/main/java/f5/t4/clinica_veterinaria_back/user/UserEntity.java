@@ -6,6 +6,8 @@ import f5.t4.clinica_veterinaria_back.profile.ProfileEntity;
 import f5.t4.clinica_veterinaria_back.role.RoleEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import f5.t4.clinica_veterinaria_back.patient.PatientEntity;
+
 
 @Entity
 @Table(name = "users")
