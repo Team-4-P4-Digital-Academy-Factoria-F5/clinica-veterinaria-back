@@ -1,4 +1,4 @@
-package f5.t4.clinica_veterinaria_back.exceptions;
+package f5.t4.clinica_veterinaria_back.globals;
 
 import java.time.LocalDateTime;
 
