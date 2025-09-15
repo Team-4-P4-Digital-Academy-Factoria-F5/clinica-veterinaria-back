@@ -34,13 +34,13 @@ public class PatientServiceImpl implements InterfacePatientService {
     }
 
     @Override
-    public PatientResponseDTO getById(String id) {
+    public PatientResponseDTO getById(Long id) {
         PatientEntity patient = repository.findById(id).orElseThrow(() -> new PatientNotFoundExceptions("Paciente no encontrado. Id " + id + " no existe."));
         return PatientMapper.toDTO(patient);
     }
 
     @Override
-    public PatientResponseDTO updateEntity(String id, PatientRequestDTO patientRequestDTO) {
+    public PatientResponseDTO updateEntity(Long id, PatientRequestDTO patientRequestDTO) {
         PatientEntity patient = repository.findById(id)
         .orElseThrow(() -> new RuntimeException("Paciente no encontrado con id: " + id));
 
@@ -59,13 +59,11 @@ public class PatientServiceImpl implements InterfacePatientService {
     }
 
     @Override
-    public void deleteEntity(String id) {
+    public void deletePatientEntity(Long id) {
         PatientEntity entity = repository.findById(id)
             .orElseThrow(() -> new RuntimeException("Paciente no encontrado con id: " + id));
         repository.delete(entity);
     }
-
-
     
 
 }

@@ -8,6 +8,7 @@ public class PatientMapper {
     public static PatientEntity toEntity(PatientRequestDTO dtoRequest) {
         //Añadir entidad User/client? 
         PatientEntity patient = new PatientEntity();
+        patient.setIdentification_number(dtoRequest.identification_number());
         patient.setName(dtoRequest.name());
         patient.setImage(dtoRequest.image());
         patient.setAge(dtoRequest.age());
@@ -22,6 +23,7 @@ public class PatientMapper {
     public static PatientResponseDTO toDTO(PatientEntity entity) {
         PatientResponseDTO dtoResponse = new PatientResponseDTO(
             entity.getId_patient(),
+            entity.getIdentification_number(),
             entity.getName(),
             entity.getImage(),
             entity.getAge(),

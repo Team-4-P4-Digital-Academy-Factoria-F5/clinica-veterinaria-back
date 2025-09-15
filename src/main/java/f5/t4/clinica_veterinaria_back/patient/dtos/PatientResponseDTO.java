@@ -1,6 +1,7 @@
 package f5.t4.clinica_veterinaria_back.patient.dtos;
 
-public record PatientResponseDTO( String id_patient,
+public record PatientResponseDTO( Long id_patient,
+String identification_number,
 String name,
 String image,
 int age,

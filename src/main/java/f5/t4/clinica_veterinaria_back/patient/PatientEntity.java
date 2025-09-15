@@ -21,14 +21,15 @@ public class PatientEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id_patient;
+    private Long id_patient;
 
+    private String identification_number;
     private String name;
     private String image;
     private int age;
     private String family;
     private String breed;
     private String sex;
-    private Long user_id; // user_id
+    private Long user_id;
     
 }
