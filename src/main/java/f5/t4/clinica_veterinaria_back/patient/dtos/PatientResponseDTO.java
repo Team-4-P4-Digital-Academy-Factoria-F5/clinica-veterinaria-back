@@ -8,6 +8,6 @@ int age,
 String family,
 String breed,
 String sex,
-Long user_id) {
+UserEntity tutor) {
 
 }

@@ -15,7 +15,7 @@ public class PatientMapper {
         patient.setFamily(dtoRequest.family());
         patient.setBreed(dtoRequest.breed());
         patient.setSex(dtoRequest.sex());
-        patient.setUser_id(dtoRequest.user_id());
+        //patient.setTutor(patient);(dtoRequest.user_id());
 
         return patient;
     }
