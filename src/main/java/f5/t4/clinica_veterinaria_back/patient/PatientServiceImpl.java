@@ -45,17 +45,24 @@ public class PatientServiceImpl implements InterfacePatientService {
         .orElseThrow(() -> new RuntimeException("Paciente no encontrado con id: " + id));
 
         // Actualizar los campos necesarios
-        entity.setName(patientRequestDTO.name());
-        entity.setImage(patientRequestDTO.image());
-        entity.setAge(patientRequestDTO.age());
-        entity.setFamily(patientRequestDTO.family());
-        entity.setBreed(patientRequestDTO.breed());
-        entity.setSex(patientRequestDTO.sex());
-        entity.setDni_client(patientRequestDTO.user_id());
+        patient.setName(patientRequestDTO.name());
+        patient.setImage(patientRequestDTO.image());
+        patient.setAge(patientRequestDTO.age());
+        patient.setFamily(patientRequestDTO.family());
+        patient.setBreed(patientRequestDTO.breed());
+        patient.setSex(patientRequestDTO.sex());
+        patient.setUser_id((patientRequestDTO.user_id()));
 
-        PatientEntity updatedEntity = repository.save(entity);
+        PatientEntity updatedEntity = repository.save(patient);
         return PatientMapper.toDTO(updatedEntity);
 
+    }
+
+    @Override
+    public void deleteEntity(String id) {
+        PatientEntity entity = repository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Paciente no encontrado con id: " + id));
+        repository.delete(entity);
     }
 
 

@@ -10,3 +10,12 @@ public interface IService <T, S> {
     public void deleteEntity(Long id);
     
 }
+
+/* public interface IService <T, S, ID> {
+    public List<T> getEntities();
+    public T createEntity(S dto);
+    public T getByID(ID id);
+    public T updateEntity(ID id, S dto);
+    public void deleteEntity(ID id);
+    
+} */
