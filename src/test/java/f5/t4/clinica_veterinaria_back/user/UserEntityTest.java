@@ -48,7 +48,7 @@ class UserEntityTest {
         profile.setSecondSurname("Rodriguez");
 
         UserEntity user = new UserEntity(
-                2L,
+                1L,
                 new HashSet<>(Set.of(role)),
                 "carlos@example.com",
                 "12345",

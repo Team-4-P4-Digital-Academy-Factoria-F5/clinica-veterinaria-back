@@ -1,4 +1,5 @@
 package f5.t4.clinica_veterinaria_back.user;
+import java.util.HashSet;
 import java.util.Set;
 
 import f5.t4.clinica_veterinaria_back.profile.ProfileEntity;
@@ -17,8 +18,9 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_user;
 
+    //Relación con Roles
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "roles_users", joinColumns = @JoinColumn(name = "dni"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "roles_users", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> roles;
 
     @Column(nullable = false, unique = true, length = 100)
@@ -26,8 +28,12 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
- 
+    //Relación con Profile
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private ProfileEntity profile;
 
+    //Relación con Pacientes, que nos permite eliminarlos en cascada cuando borramos el user correspondiente,     private UserEntity tutor; en pacients
+    @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PatientEntity> patients = new HashSet<>();
 }
+

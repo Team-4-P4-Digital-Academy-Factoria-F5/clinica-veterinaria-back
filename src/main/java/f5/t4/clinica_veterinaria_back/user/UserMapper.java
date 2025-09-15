@@ -1,8 +1,10 @@
-package f5.t4.clinica_veterinaria_back.user.mappers;
+package f5.t4.clinica_veterinaria_back.user;
+
 
 import f5.t4.clinica_veterinaria_back.profile.ProfileEntity;
 import f5.t4.clinica_veterinaria_back.role.RoleEntity;
 import f5.t4.clinica_veterinaria_back.role.RoleRepository;
+import f5.t4.clinica_veterinaria_back.role.exceptions.RoleNotFoundException;
 import f5.t4.clinica_veterinaria_back.user.UserEntity;
 import f5.t4.clinica_veterinaria_back.user.dtos.UserRequestDTO;
 import f5.t4.clinica_veterinaria_back.user.dtos.UserResponseDTO;
@@ -36,7 +38,7 @@ public class UserMapper {
 
         Set<RoleEntity> roles = userRequestDTO.roles().stream()
                 .map(roleName -> roleRepository.findByName(roleName)
-                        .orElseThrow(() -> new RuntimeException("Role not found: " + roleName)))
+                        .orElseThrow(() -> new RoleNotFoundException(roleName)))
                 .collect(Collectors.toSet());
         userEntity.setRoles(roles);
 
