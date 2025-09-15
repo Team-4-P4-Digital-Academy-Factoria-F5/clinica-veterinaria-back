@@ -11,6 +11,7 @@ import f5.t4.clinica_veterinaria_back.user.UserEntity;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ProfileEntity {
 
     @Id
