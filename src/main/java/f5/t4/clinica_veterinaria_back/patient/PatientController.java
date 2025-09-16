@@ -9,11 +9,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import f5.t4.clinica_veterinaria_back.implementations.IService;
 import f5.t4.clinica_veterinaria_back.patient.dtos.PatientRequestDTO;
 import f5.t4.clinica_veterinaria_back.patient.dtos.PatientResponseDTO;
 
+@RestController
+@RequestMapping(path="${api-endpoint}/patients")
 public class PatientController {
 
     private final IService<PatientResponseDTO, PatientRequestDTO> service;

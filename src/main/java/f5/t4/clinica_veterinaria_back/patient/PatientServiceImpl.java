@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import f5.t4.clinica_veterinaria_back.patient.dtos.PatientRequestDTO;
 import f5.t4.clinica_veterinaria_back.patient.dtos.PatientResponseDTO;
-import f5.t4.clinica_veterinaria_back.patient.exceptions.PatientNotFoundException;
 
 @Service
 public class PatientServiceImpl implements InterfacePatientService {
@@ -39,7 +38,7 @@ public class PatientServiceImpl implements InterfacePatientService {
 
     @Override
     public PatientResponseDTO getByID(Long id) {
-        PatientEntity patient = repository.findById(id).orElseThrow(() -> new PatientNotFoundException("Paciente no encontrado con id: " + id));
+        PatientEntity patient = repository.findById(id).orElseThrow(() -> new RuntimeException("Paciente no encontrado con id: " + id));
         return PatientMapper.toDTO(patient);
     }
 

@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import f5.t4.clinica_veterinaria_back.patient.exceptions.PatientNotFoundException;
 import f5.t4.clinica_veterinaria_back.role.exceptions.RoleNotFoundException;
 import f5.t4.clinica_veterinaria_back.user.exceptions.UserNotFoundException;
 
@@ -22,11 +21,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<GlobalExceptionResponseDTO> handleUserNotFound(UserNotFoundException ex) {
     return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
-    @ExceptionHandler(UserNotFoundException.class)
+   /*  @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<GlobalExceptionResponseDTO> handlePatientNotFound(PatientNotFoundException ex) {
     return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
-    }
-
+    } */
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<GlobalExceptionResponseDTO> handleGeneral(Exception ex) {
