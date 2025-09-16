@@ -3,10 +3,13 @@ package f5.t4.clinica_veterinaria_back.patient;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import f5.t4.clinica_veterinaria_back.patient.dtos.PatientRequestDTO;
 import f5.t4.clinica_veterinaria_back.patient.dtos.PatientResponseDTO;
 import f5.t4.clinica_veterinaria_back.patient.exceptions.PatientNotFoundException;
 
+@Service
 public class PatientServiceImpl implements InterfacePatientService {
     
     private final PatientRepository repository;
