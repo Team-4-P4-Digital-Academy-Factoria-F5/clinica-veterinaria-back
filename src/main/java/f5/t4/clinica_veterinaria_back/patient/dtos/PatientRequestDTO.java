@@ -1,7 +1,5 @@
 package f5.t4.clinica_veterinaria_back.patient.dtos;
 
-import f5.t4.clinica_veterinaria_back.user.UserEntity;
-
 public record PatientRequestDTO(
 String identification_number,
 String name,
@@ -10,6 +8,6 @@ int age,
 String family,
 String breed,
 String sex,
-UserEntity tutor) {
+Long tutor) {
 
 }

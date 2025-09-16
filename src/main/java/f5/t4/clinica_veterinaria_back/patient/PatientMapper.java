@@ -6,7 +6,6 @@ import f5.t4.clinica_veterinaria_back.patient.dtos.PatientResponseDTO;
 public class PatientMapper {
     
     public static PatientEntity toEntity(PatientRequestDTO dtoRequest) {
-        //Añadir entidad User/client? 
         PatientEntity patient = new PatientEntity();
         patient.setIdentification_number(dtoRequest.identification_number());
         patient.setName(dtoRequest.name());
@@ -15,8 +14,6 @@ public class PatientMapper {
         patient.setFamily(dtoRequest.family());
         patient.setBreed(dtoRequest.breed());
         patient.setSex(dtoRequest.sex());
-        patient.setTutor(dtoRequest.tutor());
-
         return patient;
     }
 
@@ -30,7 +27,7 @@ public class PatientMapper {
             entity.getFamily(),
             entity.getBreed(),
             entity.getSex(),
-            entity.getTutor()
+            entity.getTutor() != null ? entity.getTutor().getId_user() : null
         );
 
         return dtoResponse;
