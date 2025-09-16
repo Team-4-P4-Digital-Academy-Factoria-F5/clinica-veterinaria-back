@@ -65,19 +65,6 @@ public class PatientServiceImpl implements InterfacePatientService {
             .orElseThrow(() -> new RuntimeException("Paciente no encontrado con id: " + id));
         repository.delete(entity);
     }
-
-
-    /* @Override
-    public PatientResponseDTO createEntity(Long dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createEntity'");
-    }
-
-    @Override
-    public PatientResponseDTO updateEntity(Long id, Long dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateEntity'");
-    } */
     
 
 }

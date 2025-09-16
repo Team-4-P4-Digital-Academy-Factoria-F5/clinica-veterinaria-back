@@ -6,11 +6,11 @@ import f5.t4.clinica_veterinaria_back.implementations.IService;
 import f5.t4.clinica_veterinaria_back.patient.dtos.PatientRequestDTO;
 import f5.t4.clinica_veterinaria_back.patient.dtos.PatientResponseDTO;
 
-public interface InterfacePatientService extends IService<PatientResponseDTO, Long>{
+public interface InterfacePatientService extends IService<PatientResponseDTO, PatientRequestDTO>{
 
-    List<PatientResponseDTO> getPatientEntities();
+    List<PatientResponseDTO> getEntities();
     PatientResponseDTO createEntity(PatientRequestDTO patientRequestDTO);
-    PatientResponseDTO getById(Long id);
+    PatientResponseDTO getByID(Long id);
     PatientResponseDTO updateEntity(Long id, PatientRequestDTO patientRequestDTO);
-    void deletePatientEntity(Long id);
+    void deleteEntity(Long id);
 }
