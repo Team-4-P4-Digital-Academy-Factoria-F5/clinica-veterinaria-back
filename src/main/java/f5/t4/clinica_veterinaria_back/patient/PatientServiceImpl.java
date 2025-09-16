@@ -35,7 +35,7 @@ public class PatientServiceImpl implements InterfacePatientService {
     }
 
     @Override
-    public PatientResponseDTO getById(Long id) {
+    public PatientResponseDTO getByID(Long id) {
         PatientEntity patient = repository.findById(id).orElseThrow(() -> new PatientNotFoundException("Paciente no encontrado con id: " + id));
         return PatientMapper.toDTO(patient);
     }
@@ -60,11 +60,24 @@ public class PatientServiceImpl implements InterfacePatientService {
     }
 
     @Override
-    public void deletePatientEntity(Long id) {
+    public void deleteEntity(Long id) {
         PatientEntity entity = repository.findById(id)
             .orElseThrow(() -> new RuntimeException("Paciente no encontrado con id: " + id));
         repository.delete(entity);
     }
+
+
+    /* @Override
+    public PatientResponseDTO createEntity(Long dto) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createEntity'");
+    }
+
+    @Override
+    public PatientResponseDTO updateEntity(Long id, Long dto) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateEntity'");
+    } */
     
 
 }
