@@ -5,6 +5,7 @@ import java.util.List;
 
 import f5.t4.clinica_veterinaria_back.patient.dtos.PatientRequestDTO;
 import f5.t4.clinica_veterinaria_back.patient.dtos.PatientResponseDTO;
+import f5.t4.clinica_veterinaria_back.patient.exceptions.PatientNotFoundException;
 
 public class PatientServiceImpl implements InterfacePatientService {
     
@@ -34,8 +35,8 @@ public class PatientServiceImpl implements InterfacePatientService {
     }
 
     @Override
-    public PatientResponseDTO getById(Long id) {
-        PatientEntity patient = repository.findById(id).orElseThrow(() -> new PatientNotFoundExceptions("Paciente no encontrado. Id " + id + " no existe."));
+    public PatientResponseDTO getByID(Long id) {
+        PatientEntity patient = repository.findById(id).orElseThrow(() -> new PatientNotFoundException("Paciente no encontrado con id: " + id));
         return PatientMapper.toDTO(patient);
     }
 
@@ -51,7 +52,7 @@ public class PatientServiceImpl implements InterfacePatientService {
         patient.setFamily(patientRequestDTO.family());
         patient.setBreed(patientRequestDTO.breed());
         patient.setSex(patientRequestDTO.sex());
-        patient.setUser_id((patientRequestDTO.user_id()));
+        patient.setTutor((patientRequestDTO.tutor()));
 
         PatientEntity updatedEntity = repository.save(patient);
         return PatientMapper.toDTO(updatedEntity);
@@ -59,11 +60,24 @@ public class PatientServiceImpl implements InterfacePatientService {
     }
 
     @Override
-    public void deletePatientEntity(Long id) {
+    public void deleteEntity(Long id) {
         PatientEntity entity = repository.findById(id)
             .orElseThrow(() -> new RuntimeException("Paciente no encontrado con id: " + id));
         repository.delete(entity);
     }
+
+
+    /* @Override
+    public PatientResponseDTO createEntity(Long dto) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createEntity'");
+    }
+
+    @Override
+    public PatientResponseDTO updateEntity(Long id, Long dto) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateEntity'");
+    } */
     
 
 }
