@@ -11,7 +11,7 @@ import f5.t4.clinica_veterinaria_back.implementations.IRegisterService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("${api-endpoint}/user/register")
+@RequestMapping("${api-endpoint}/register")
 @RequiredArgsConstructor
 public class RegisterController {
 
