@@ -26,50 +26,51 @@ public class RegisterServiceImpl implements IRegisterService<RegisterRequestDTO,
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public RegisterResponseDTO register(RegisterRequestDTO dto) {
-        //  Decodificar de la contraseña en Base 64
-        byte[] decodedBytes = Base64.getDecoder().decode(dto.password());
-        String decodedPassword = new String(decodedBytes);
+   @Override
+public RegisterResponseDTO register(RegisterRequestDTO dto) {
 
-        // Encriptación de la contraseña en la BD
-        String hashedPassword = passwordEncoder.encode(decodedPassword);
+    byte[] decodedPasswordBytes = Base64.getDecoder().decode(dto.password());
+    String decodedPassword = new String(decodedPasswordBytes);
 
-        //  Obtener el rol por defecto
-        RoleEntity defaultRole = roleRepository.findByName("ROLE_USER")
-                .orElseThrow(() -> new RoleNotFoundException("Role not found with name: ROLE_USER"));
+    String hashedPassword = passwordEncoder.encode(decodedPassword);
 
-        // Creación del usuario
-        UserEntity user = UserEntity.builder()
-                .email(dto.email())
-                .password(hashedPassword)
-                .roles(Set.of(defaultRole))
-                .build();
+   
+    byte[] decodedEmailBytes = Base64.getDecoder().decode(dto.email());
+    String decodedEmail = new String(decodedEmailBytes);
 
-        // Creación del resto de datos con el perfil
-        ProfileEntity profile = ProfileEntity.builder()
-                .dni(dto.dni())
-                .name(dto.name())
-                .firstSurname(dto.firstSurname())
-                .secondSurname(dto.secondSurname())
-                .phoneNumber(dto.phoneNumber())
-                .user(user)
-                .build();
 
-        user.setProfile(profile);
+    RoleEntity defaultRole = roleRepository.findByName("ROLE_USER")
+            .orElseThrow(() -> new RoleNotFoundException("Role not found with name: ROLE_USER"));
 
-        UserEntity saved = userRepository.save(user);
+    UserEntity user = UserEntity.builder()
+            .email(decodedEmail)   
+            .password(hashedPassword)
+            .roles(Set.of(defaultRole))
+            .build();
 
-  
-        return new RegisterResponseDTO(
-                saved.getId_user(),
-                saved.getEmail(),
-                saved.getProfile().getDni(),
-                saved.getProfile().getName(),
-                saved.getProfile().getFirstSurname(),
-                saved.getProfile().getSecondSurname(),
-                saved.getProfile().getPhoneNumber(),
-                saved.getRoles().stream().map(RoleEntity::getName).collect(Collectors.toSet())
-        );
-    }
+
+    ProfileEntity profile = ProfileEntity.builder()
+            .dni(dto.dni())
+            .name(dto.name())
+            .firstSurname(dto.firstSurname())
+            .secondSurname(dto.secondSurname())
+            .phoneNumber(dto.phoneNumber())
+            .user(user)
+            .build();
+
+    user.setProfile(profile);
+
+    UserEntity saved = userRepository.save(user);
+
+    return new RegisterResponseDTO(
+            saved.getId_user(),
+            saved.getEmail(),
+            saved.getProfile().getDni(),
+            saved.getProfile().getName(),
+            saved.getProfile().getFirstSurname(),
+            saved.getProfile().getSecondSurname(),
+            saved.getProfile().getPhoneNumber(),
+            saved.getRoles().stream().map(RoleEntity::getName).collect(Collectors.toSet())
+    );
+}
 }
