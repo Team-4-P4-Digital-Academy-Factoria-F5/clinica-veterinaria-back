@@ -44,7 +44,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.POST, endpoint + "/register").permitAll()
-                        .requestMatchers(endpoint + "/patients").permitAll()   
+                        .requestMatchers(endpoint + "/patients").hasAnyRole("USER", "ADMIN") 
                         .requestMatchers(endpoint + "/login").hasAnyRole("USER", "ADMIN") // principio de mínimos privilegios
                         .anyRequest().authenticated())
                         .userDetailsService(jpaUserDetailsService)
