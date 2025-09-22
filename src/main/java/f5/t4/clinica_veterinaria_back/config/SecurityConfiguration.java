@@ -36,7 +36,7 @@ public class SecurityConfiguration {
                         .requestMatchers("h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.POST, endpoint + "/register").permitAll()
                         .requestMatchers(endpoint + "/patients").permitAll()   
-                        .requestMatchers(endpoint + "/user/login").hasAnyRole("USER", "ADMIN") // principio de mínimos privilegios
+                        .requestMatchers(endpoint + "/login").hasAnyRole("USER", "ADMIN") // principio de mínimos privilegios
                         .anyRequest().authenticated())
                 .httpBasic(withDefaults());
 
