@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -11,17 +13,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,6 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import f5.t4.clinica_veterinaria_back.implementations.IService;
 import f5.t4.clinica_veterinaria_back.patient.dtos.PatientRequestDTO;
 import f5.t4.clinica_veterinaria_back.patient.dtos.PatientResponseDTO;
+import f5.t4.clinica_veterinaria_back.user.UserEntity;
 
 @WebMvcTest(controllers = PatientController.class)
 public class PatientControllerTest {
@@ -36,109 +41,117 @@ public class PatientControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockitoBean
-    private IService<PatientResponseDTO, PatientRequestDTO> patientService;
-    
+    @MockBean
+    private IService<PatientResponseDTO, PatientRequestDTO> service;
+
     @Autowired
-    ObjectMapper mapper;
+    private ObjectMapper objectMapper;
 
-    @Test
-    @DisplayName("Should return all patients")
-    void testIndex_ShouldReturnAPatients() throws Exception {
-        PatientResponseDTO milka = new PatientResponseDTO();
-        PatientResponseDTO oreo = new PatientResponseDTO();
-
-        List<PatientResponseDTO> patients = List.of(milka, oreo);
-        String json = mapper.writeValueAsString(patients);
-
-        when(patientService.getEntities()).thenReturn(patients);
-        MockHttpServletResponse response = mockMvc.perform(get("/api/v1/patients"))
-            .andExpect(status().isOk())
-            .andReturn()
-            .getResponse();
-
-        assertThat(response.getStatus(), is(equalTo(200)));
-        assertThat(response.getContentAsString(), is(equalTo(json)));
+    private UserEntity buildTutor() {
+        return UserEntity.builder()
+                .id_user(10L)
+                .email("carlos@email.com")
+                .password("12345")
+                .roles(new HashSet<>())
+                .patients(new HashSet<>())
+                .build();
     }
 
-    
+    private PatientRequestDTO buildRequest(String name, int age) {
+        return new PatientRequestDTO(
+                "ID-123",
+                name,
+                name.toLowerCase() + ".png",
+                age,
+                "Canidae",
+                "Labrador",
+                "Male",
+                buildTutor()
+        );
+    }
+
+    private PatientResponseDTO buildResponse(Long id, String name, int age) {
+        return new PatientResponseDTO(
+                id,
+                "ID-" + id,
+                name,
+                name.toLowerCase() + ".png",
+                age,
+                "Canidae",
+                "Labrador",
+                "Male",
+                buildTutor()
+        );
+    }
 
     @Test
-    void testStore_ShouldReturnStatus201() throws Exception {
-        PatientRequestDTO dto = new PatientRequestDTO("NV34T7", "Milka", "", 2, "gato", "bengalí", "hembra", 12312312B);
-        PatientResponseDTO milka = new PatientResponseDTO(1L, "NV34T7", "Milka", "", 2, "gato", "bengalí", "hembra", 12312312B);
-        String json = mapper.writeValueAsString(dto);
+    void testIndex() throws Exception {
+        Mockito.when(service.getEntities())
+                .thenReturn(List.of(buildResponse(1L, "Firulais", 5)));
 
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("Firulais"))
+                .andExpect(jsonPath("$[0].tutor.email").value("carlos@email.com"));
+    }
 
-        when(patientService.createEntity(dto)).thenReturn(milka);
-        MockHttpServletResponse response = mockMvc
-                .perform(post("/api/v1/patients").content(json).contentType("application/json"))
+    @Test
+    void testCreateEntity_Valid() throws Exception {
+        PatientRequestDTO request = buildRequest("Max", 3);
+        PatientResponseDTO response = buildResponse(1L, "Max", 3);
+
+        Mockito.when(service.createEntity(any(PatientRequestDTO.class)))
+                .thenReturn(response);
+
+        mockMvc.perform(post("/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse();
-
-        assertThat(response.getContentAsString(), containsString(milka.name()));
+                .andExpect(jsonPath("$.name").value("Max"))
+                .andExpect(jsonPath("$.tutor.id_user").value(10L));
     }
 
     @Test
-    void testSavePatient_ShouldReturnStatus400_IfNameIsEmpty() throws Exception {
-        PatientRequestDTO dto = new PatientRequestDTO("");
-        String json = mapper.writeValueAsString(dto);
-        when(patientService.createEntity(dto)).thenReturn(null);
-        mockMvc.perform(post("/api/v1/patients").content(json).contentType("application/json"))
+    void testCreateEntity_InvalidName() throws Exception {
+        PatientRequestDTO request = buildRequest(" ", 3);
+
+        mockMvc.perform(post("/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    void testCreatePatient_ShouldReturnNoContent_IfServiceDoesNotReturnAnyValue() throws Exception {
-        PatientRequestDTO dto = new PatientRequestDTO("A23M87", "Milka", "", 2, "gato", "bengalí", "hembra", 12312312B);
-        String json = mapper.writeValueAsString(dto);
+    void testShow() throws Exception {
+        Mockito.when(service.getByID(1L))
+                .thenReturn(buildResponse(1L, "Firulais", 5));
 
-        when(patientService.createEntity(dto)).thenReturn(null);
-        mockMvc.perform(post("/api/v1/patients").content(json).contentType("application/json"))
+        mockMvc.perform(get("/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Firulais"))
+                .andExpect(jsonPath("$.tutor.email").value("carlos@email.com"));
+    }
+
+    @Test
+    void testUpdate() throws Exception {
+        PatientRequestDTO request = buildRequest("Max", 4);
+        PatientResponseDTO response = buildResponse(1L, "Max", 4);
+
+        Mockito.when(service.updateEntity(eq(1L), any(PatientRequestDTO.class)))
+                .thenReturn(response);
+
+        mockMvc.perform(put("/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.age").value(4))
+                .andExpect(jsonPath("$.tutor.id_user").value(10L));
+    }
+
+    @Test
+    void testDelete() throws Exception {
+        mockMvc.perform(delete("/1"))
                 .andExpect(status().isNoContent());
-    }
-
-    @Test
-    void testGetAPatientById_ShouldReturnStatus200_And_Patient() throws Exception {
-        Long pathVariable = 1L;
-        PatienResponseDTO oreo = new PatientResponseDTO(2L, "A23R87",  "Oreo", "", 3, "gato", "siamés", "hembra", 12121212C);
-
-        when(patientService.getByID(pathVariable)).thenReturn(oreo);
-        MockHttpServletResponse response = mockMvc.perform(get("/api/v1/patients/{id}", pathVariable))
-            .andExpect(status().isOk())
-            .andReturn()
-            .getResponse();
-
-        assertThat(response.getContentAsString(), containsString(oreo.name()));
-    }
-
-    @Test
-    @DisplayName("Should update patient and return 200")
-    void testUpdatePatient_ShouldReturnStatus200() throws Exception {
-        Long pathVariable = 1L;
-        PatientRequestDTO dto = new PatientRequestDTO("AB23C54", "Milka", "", 3, "gato", "bengalí", "hembra", 12312312L);
-        PatientResponseDTO updated = new PatientResponseDTO(1L, "AB23C54", "Milka", "", 3, "gato", "bengalí", "hembra", 12312312L);
-        String json = mapper.writeValueAsString(dto);
-
-        when(patientService.updateEntity(pathVariable, dto)).thenReturn(updated);
-
-        mockMvc.perform(put("/patients/{id}", pathVariable)
-                .content(json)
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string(containsString("Milka Updated")));
-    }
-
-    @Test
-    @DisplayName("Should delete patient and return 204")
-    void testDeletePatient_ShouldReturnStatus204() throws Exception {
-        Long pathVariable = 1L;
-
-        doNothing().when(patientService).deleteEntity(pathVariable);
-
-        mockMvc.perform(delete("/patients/{id}", pathVariable))
-            .andExpect(status().isNoContent());
     }
 
 }
