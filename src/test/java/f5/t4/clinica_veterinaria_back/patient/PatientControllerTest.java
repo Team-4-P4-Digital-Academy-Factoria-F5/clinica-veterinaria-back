@@ -63,7 +63,7 @@ public class PatientControllerTest {
                 name,
                 name.toLowerCase() + ".png",
                 age,
-                "Canidae",
+                "Perro",
                 "Labrador",
                 "Male",
                 buildTutor()
@@ -77,7 +77,7 @@ public class PatientControllerTest {
                 name,
                 name.toLowerCase() + ".png",
                 age,
-                "Canidae",
+                "Perro",
                 "Labrador",
                 "Male",
                 buildTutor()
