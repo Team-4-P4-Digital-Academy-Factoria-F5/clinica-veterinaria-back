@@ -38,21 +38,21 @@ public class SecurityConfiguration {
                         .disable())
                 .headers(header -> header
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-                // Solo se permite que tu aplicación sea embebida en un <iframe> si el origen
-                // (dominio) es el mismo.
                 .formLogin(form -> form.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("h2-console/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.POST, endpoint + "/register").permitAll()
-                        .requestMatchers(endpoint + "/patients").hasAnyRole("USER", "ADMIN") 
-                        .requestMatchers(endpoint + "/login").hasAnyRole("USER", "ADMIN") // principio de mínimos privilegios
+                        .requestMatchers(HttpMethod.POST, endpoint + "/login").permitAll()
+                        .requestMatchers(endpoint + "/patients").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated())
-                        .userDetailsService(jpaUserDetailsService)
-                        .httpBasic(withDefaults())
-                          .sessionManagement(session -> session
-                                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
-
-        // http.headers(header -> header.frameOptions(frame -> frame.sameOrigin()));
+                .userDetailsService(jpaUserDetailsService)
+                .httpBasic(withDefaults())
+                .logout(logout -> logout
+                        .logoutUrl(endpoint + "/logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID"))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
 
@@ -65,4 +65,3 @@ public class SecurityConfiguration {
 
     
 }
-
