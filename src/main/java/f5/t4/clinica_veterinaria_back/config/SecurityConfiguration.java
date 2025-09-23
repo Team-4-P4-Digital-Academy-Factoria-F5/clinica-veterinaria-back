@@ -42,7 +42,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.POST, endpoint + "/register").permitAll()
-                        .requestMatchers(HttpMethod.GET, endpoint + "/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, endpoint + "/login").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(endpoint + "/users").hasAnyRole("USER","ADMIN")
                         .requestMatchers(endpoint + "/patients").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated())
