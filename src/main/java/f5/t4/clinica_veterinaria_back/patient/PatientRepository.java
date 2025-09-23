@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PatientRepository extends JpaRepository<PatientEntity, Long>{
-    List<PatientEntity> findByTutorIdUser(Long userId);
     List<PatientEntity> findByName(String name);
     Optional<PatientEntity> findByIdentificationNumber(String identificationNumber);
 

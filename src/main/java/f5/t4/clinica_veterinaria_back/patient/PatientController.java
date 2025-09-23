@@ -70,10 +70,10 @@ public class PatientController {
     }
 
     // Obtener pacientes de un tutor específico
-    @GetMapping("/by-tutor/{tutorId}")
+    /* @GetMapping("/by-tutor/{tutorId}")
     public ResponseEntity<List<PatientResponseDTO>> getPatientsByTutor(@PathVariable Long tutorId) {
         return ResponseEntity.ok(patientService.getEntitiesByTutor(tutorId));
-    }
+    } */
     // Buscar paciente por número de identificación (DNI, chip, etc.)
     @GetMapping("/identification/{identificationNumber}")
     public ResponseEntity<PatientResponseDTO> getPatientByIdentification(@PathVariable String identificationNumber) {

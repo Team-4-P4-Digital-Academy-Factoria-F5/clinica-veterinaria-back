@@ -86,16 +86,6 @@ public class PatientServiceImpl implements InterfacePatientService {
         repository.delete(entity);
     }
     
-    @Override
-    public List<PatientResponseDTO> getEntitiesByTutor(Long tutorId) {
-        List<PatientEntity> patients = repository.findByTutor_Id_user(tutorId);
-        if (patients.isEmpty()) {
-            throw new PatientException("No se encontraron pacientes para el usuario con id: " + tutorId);
-        }
-        return patients.stream()
-                .map(PatientMapper::toDTO)
-                .toList();
-    }
 
     @Override
     public PatientResponseDTO getByIdentificationNumber(String identificationNumber) {
