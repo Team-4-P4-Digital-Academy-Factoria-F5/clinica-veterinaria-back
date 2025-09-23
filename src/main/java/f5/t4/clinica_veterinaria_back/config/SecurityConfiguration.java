@@ -9,9 +9,12 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import f5.t4.clinica_veterinaria_back.security.JpaUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -19,6 +22,12 @@ public class SecurityConfiguration {
 
     @Value("${api-endpoint}")
     String endpoint;
+
+    private JpaUserDetailsService jpaUserDetailsService;
+
+    public SecurityConfiguration(JpaUserDetailsService jpaUserDetailsService) {
+        this.jpaUserDetailsService = jpaUserDetailsService;
+    }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -34,11 +43,14 @@ public class SecurityConfiguration {
                 .formLogin(form -> form.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("h2-console/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, endpoint + "/user/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, endpoint + "/patients").permitAll()
-                        .requestMatchers(endpoint + "/user/login").hasAnyRole("USER", "ADMIN") // principio de mínimos privilegios
+                        .requestMatchers(HttpMethod.POST, endpoint + "/register").permitAll()
+                        .requestMatchers(endpoint + "/patients").hasAnyRole("USER", "ADMIN") 
+                        .requestMatchers(endpoint + "/login").hasAnyRole("USER", "ADMIN") // principio de mínimos privilegios
                         .anyRequest().authenticated())
-                .httpBasic(withDefaults());
+                        .userDetailsService(jpaUserDetailsService)
+                        .httpBasic(withDefaults())
+                          .sessionManagement(session -> session
+                                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
 
         // http.headers(header -> header.frameOptions(frame -> frame.sameOrigin()));
 
