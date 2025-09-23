@@ -2,6 +2,8 @@ package f5.t4.clinica_veterinaria_back.user;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,18 +17,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import f5.t4.clinica_veterinaria_back.implementations.IService;
+import f5.t4.clinica_veterinaria_back.patient.PatientEntity;
 import f5.t4.clinica_veterinaria_back.user.dtos.UserRequestDTO;
 import f5.t4.clinica_veterinaria_back.user.dtos.UserResponseDTO;
+import f5.t4.clinica_veterinaria_back.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping(path = "${api-endpoint}users")
+@RequestMapping(path = "${api-endpoint}/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final IService<UserResponseDTO, UserRequestDTO> userService;
+    private final UserRepository userRepository;
 
-    @GetMapping
+
+    @GetMapping("")
     public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
         return ResponseEntity.ok(userService.getEntities());
     }
@@ -54,6 +60,17 @@ public class UserController {
         userService.deleteEntity(id);
         return ResponseEntity.noContent().build();
     }
+       @GetMapping("/{id}/patients")
+    public ResponseEntity<Set<PatientEntity>> getPatientsByUserId(@PathVariable Long id) {
+        Optional<UserEntity> userOpt = userRepository.findById(id);
+        if (userOpt.isPresent()) {
+            return ResponseEntity.ok(userOpt.get().getPatients());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 
     @GetMapping("/patients")
     public void getPatients(Principal principal) {

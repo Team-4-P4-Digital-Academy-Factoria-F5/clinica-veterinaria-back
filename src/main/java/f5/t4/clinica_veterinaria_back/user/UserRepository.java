@@ -9,5 +9,5 @@ import f5.t4.clinica_veterinaria_back.patient.PatientEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByEmail(String email);
-    Set<PatientEntity> findByPatients();
+    // Set<PatientEntity> findByPatients();
 }

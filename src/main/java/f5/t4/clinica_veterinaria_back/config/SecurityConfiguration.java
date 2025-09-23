@@ -42,7 +42,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.POST, endpoint + "/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, endpoint + "/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, endpoint + "/login").permitAll()
+                        .requestMatchers(endpoint + "/users").hasAnyRole("USER","ADMIN")
                         .requestMatchers(endpoint + "/patients").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated())
                 .userDetailsService(jpaUserDetailsService)
@@ -52,7 +53,7 @@ public class SecurityConfiguration {
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID"))
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
 
         return http.build();
 
