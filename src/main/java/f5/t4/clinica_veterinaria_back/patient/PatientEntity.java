@@ -1,5 +1,7 @@
 package f5.t4.clinica_veterinaria_back.patient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import f5.t4.clinica_veterinaria_back.user.UserEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -37,6 +39,7 @@ public class PatientEntity {
 
     @ManyToOne(fetch=FetchType.LAZY, optional=false)
     @JoinColumn(name="user_id", nullable=false)
+    @JsonBackReference
     private UserEntity tutor;
 
 
