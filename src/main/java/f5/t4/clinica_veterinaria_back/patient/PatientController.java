@@ -24,7 +24,7 @@ public class PatientController {
     private final IService<PatientResponseDTO, PatientRequestDTO> service;
     private final InterfacePatientService patientService;
 
-    public PatientController(IService<PatientResponseDTO, PatientRequestDTO> service, PatientServiceImpl patientService) {
+    public PatientController(IService<PatientResponseDTO, PatientRequestDTO> service, InterfacePatientService patientService) {
         this.service = service;
         this.patientService = patientService;
     }
