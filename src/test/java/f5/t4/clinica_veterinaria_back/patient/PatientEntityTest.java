@@ -32,7 +32,7 @@ public class PatientEntityTest {
         patient.setTutor(tutor);
 
         assertThat(patient.getId_patient()).isEqualTo(1L);
-        assertThat(patient.getIdentification_number()).isEqualTo("ABC123");
+        assertThat(patient.getIdentificationNumber()).isEqualTo("ABC123");
         assertThat(patient.getName()).isEqualTo("Firulais");
         assertThat(patient.getImage()).isEqualTo("image.png");
         assertThat(patient.getAge()).isEqualTo(5);

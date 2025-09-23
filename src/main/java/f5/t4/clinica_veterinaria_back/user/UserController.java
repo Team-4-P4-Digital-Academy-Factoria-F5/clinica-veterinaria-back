@@ -1,5 +1,6 @@
 package f5.t4.clinica_veterinaria_back.user;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -52,5 +53,10 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteEntity(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/patients")
+    public void getPatients(Principal principal) {
+        System.out.println(principal.getName());
     }
 }
