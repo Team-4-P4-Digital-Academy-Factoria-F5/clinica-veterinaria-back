@@ -7,14 +7,20 @@ import org.springframework.stereotype.Service;
 
 import f5.t4.clinica_veterinaria_back.patient.dtos.PatientRequestDTO;
 import f5.t4.clinica_veterinaria_back.patient.dtos.PatientResponseDTO;
+import f5.t4.clinica_veterinaria_back.patient.exceptions.PatientException;
+import f5.t4.clinica_veterinaria_back.user.UserEntity;
+import f5.t4.clinica_veterinaria_back.user.UserRepository;
+import f5.t4.clinica_veterinaria_back.user.exceptions.UserNotFoundException;
 
 @Service
 public class PatientServiceImpl implements InterfacePatientService {
     
     private final PatientRepository repository;
+    private final UserRepository userRepository;
 
-    public PatientServiceImpl(PatientRepository repository) {
+    public PatientServiceImpl(PatientRepository repository, UserRepository userRepository) {
         this.repository = repository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -31,7 +37,13 @@ public class PatientServiceImpl implements InterfacePatientService {
 
     @Override
     public PatientResponseDTO createEntity(PatientRequestDTO patientRequestDTO) {
+        if (patientRequestDTO.tutor() == null) {
+            throw new PatientException("User ID cannot be null");
+        }
+        UserEntity user = userRepository.findById(patientRequestDTO.tutor())
+                .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado con id: " + patientRequestDTO.tutor()));
         PatientEntity patient = PatientMapper.toEntity(patientRequestDTO);
+        patient.setTutor(user);
         PatientEntity patientStored = repository.save(patient);
         return PatientMapper.toDTO(patientStored) ;
     }
@@ -44,8 +56,14 @@ public class PatientServiceImpl implements InterfacePatientService {
 
     @Override
     public PatientResponseDTO updateEntity(Long id, PatientRequestDTO patientRequestDTO) {
+        if (patientRequestDTO.tutor() == null) {
+            throw new PatientException("User ID cannot be null");
+        }
         PatientEntity patient = repository.findById(id)
         .orElseThrow(() -> new RuntimeException("Paciente no encontrado con id: " + id));
+
+        UserEntity user = userRepository.findById(patientRequestDTO.tutor())
+                .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado con id: " + patientRequestDTO.tutor()));
 
         // Actualizar los campos necesarios
         patient.setName(patientRequestDTO.name());
@@ -54,7 +72,7 @@ public class PatientServiceImpl implements InterfacePatientService {
         patient.setFamily(patientRequestDTO.family());
         patient.setBreed(patientRequestDTO.breed());
         patient.setSex(patientRequestDTO.sex());
-        patient.setTutor((patientRequestDTO.tutor()));
+        patient.setTutor(user);
 
         PatientEntity updatedEntity = repository.save(patient);
         return PatientMapper.toDTO(updatedEntity);
@@ -68,5 +86,30 @@ public class PatientServiceImpl implements InterfacePatientService {
         repository.delete(entity);
     }
     
+    @Override
+    public List<PatientResponseDTO> getEntitiesByTutor(Long tutorId) {
+        List<PatientEntity> patients = repository.findByTutor_Id_user(tutorId);
+        if (patients.isEmpty()) {
+            throw new PatientException("No se encontraron pacientes para el usuario con id: " + tutorId);
+        }
+        return patients.stream()
+                .map(PatientMapper::toDTO)
+                .toList();
+    }
+
+    @Override
+    public PatientResponseDTO getByIdentificationNumber(String identificationNumber) {
+        PatientEntity patient = repository.findByIdentificationNumber(identificationNumber)
+                .orElseThrow(() -> new PatientException("No se encontró paciente con identificación: " + identificationNumber));
+        return PatientMapper.toDTO(patient);
+    }
+
+    @Override
+    public List<PatientResponseDTO> searchByName(String name) {
+        List<PatientEntity> patients = repository.findByName(name);
+        return patients.stream()
+                .map(PatientMapper::toDTO)
+                .toList();
+    }
 
 }

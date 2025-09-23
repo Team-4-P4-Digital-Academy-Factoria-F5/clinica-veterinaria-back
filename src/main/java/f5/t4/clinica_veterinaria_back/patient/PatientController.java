@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import f5.t4.clinica_veterinaria_back.implementations.IService;
@@ -21,9 +22,11 @@ import f5.t4.clinica_veterinaria_back.patient.dtos.PatientResponseDTO;
 public class PatientController {
 
     private final IService<PatientResponseDTO, PatientRequestDTO> service;
+    private final InterfacePatientService patientService;
 
-    public PatientController(IService<PatientResponseDTO, PatientRequestDTO> service) {
+    public PatientController(IService<PatientResponseDTO, PatientRequestDTO> service, InterfacePatientService patientService) {
         this.service = service;
+        this.patientService = patientService;
     }
 
     @GetMapping("")
@@ -66,8 +69,20 @@ public class PatientController {
         return ResponseEntity.noContent().build();
     }
 
-
-   
-
-
+    // Obtener pacientes de un tutor específico
+    @GetMapping("/by-tutor/{tutorId}")
+    public ResponseEntity<List<PatientResponseDTO>> getPatientsByTutor(@PathVariable Long tutorId) {
+        return ResponseEntity.ok(patientService.getEntitiesByTutor(tutorId));
+    }
+    // Buscar paciente por número de identificación (DNI, chip, etc.)
+    @GetMapping("/identification/{identificationNumber}")
+    public ResponseEntity<PatientResponseDTO> getPatientByIdentification(@PathVariable String identificationNumber) {
+        return ResponseEntity.ok(patientService.getByIdentificationNumber(identificationNumber));
+    }
+    // Buscar pacientes por nombre parcial
+    @GetMapping("/search")
+    public ResponseEntity<List<PatientResponseDTO>> searchPatientsByName(@RequestParam String name) {
+        return ResponseEntity.ok(patientService.searchByName(name));
+    }
 }
+

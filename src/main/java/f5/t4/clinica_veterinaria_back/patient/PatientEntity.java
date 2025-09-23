@@ -1,5 +1,6 @@
 package f5.t4.clinica_veterinaria_back.patient;
 
+import f5.t4.clinica_veterinaria_back.user.UserEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -12,8 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import f5.t4.clinica_veterinaria_back.user.*;
 
 
 @Entity
@@ -28,7 +27,7 @@ public class PatientEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_patient;
 
-    private String identification_number;
+    private String identificationNumber;
     private String name;
     private String image;
     private int age;
