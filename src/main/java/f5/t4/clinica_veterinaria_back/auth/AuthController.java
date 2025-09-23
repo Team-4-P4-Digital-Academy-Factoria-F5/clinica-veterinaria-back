@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
 @RestController
-@RequestMapping(path = "${api-endpoint}/user")
+@RequestMapping(path = "${api-endpoint}")
 public class AuthController {
     
         @GetMapping("/login")
