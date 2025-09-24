@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import f5.t4.clinica_veterinaria_back.implementations.IService;
+import f5.t4.clinica_veterinaria_back.implementations.IUserService;
 import f5.t4.clinica_veterinaria_back.patient.PatientEntity;
 import f5.t4.clinica_veterinaria_back.user.dtos.UserRequestDTO;
 import f5.t4.clinica_veterinaria_back.user.dtos.UserResponseDTO;
@@ -31,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final IService<UserResponseDTO, UserRequestDTO> userService;
+    private final IUserService<UserResponseDTO, UserRequestDTO> userService;
     private final UserRepository userRepository;
 
 
@@ -40,11 +41,6 @@ public class UserController {
         return ResponseEntity.ok(userService.getEntities());
     }
 
-    @PostMapping
-    public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO dto) {
-        UserResponseDTO createdUser = userService.createEntity(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
-    }
 
    @GetMapping("/{id}")
 public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id, Principal principal) {

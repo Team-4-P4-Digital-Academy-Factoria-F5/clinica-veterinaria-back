@@ -36,12 +36,6 @@ public class UserServiceImpl implements UserService {
                 .toList();
     }
 
-    @Override
-    public UserResponseDTO createEntity(UserRequestDTO dto) {
-        UserEntity entity = userMapper.userRequestDtoToUserEntity(dto);
-        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
-        return userMapper.userEntityToUserResponseDto(userRepository.save(entity));
-    }
 
     @Override
     public UserResponseDTO getByID(Long id) {
