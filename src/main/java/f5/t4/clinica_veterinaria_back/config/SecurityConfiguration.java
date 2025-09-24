@@ -43,8 +43,15 @@ public class SecurityConfiguration {
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.POST, endpoint + "/register").permitAll()
                         .requestMatchers(HttpMethod.GET, endpoint + "/login").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(endpoint + "/users").hasAnyRole("USER","ADMIN")
-                        .requestMatchers(endpoint + "/patients").hasAnyRole("USER", "ADMIN")
+                        
+                        .requestMatchers(HttpMethod.GET + "/users").hasAnyRole("ADMIN")
+                        .requestMatchers(endpoint + "/users/**").hasAnyRole("USER","ADMIN")
+   
+                        .requestMatchers(HttpMethod.GET, endpoint + "/patients").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, endpoint + "/patients").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, endpoint + "/patients/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, endpoint + "/patients/**").hasAnyRole("USER", "ADMIN")
+                        
                         .anyRequest().authenticated())
                 .userDetailsService(jpaUserDetailsService)
                 .httpBasic(withDefaults())
