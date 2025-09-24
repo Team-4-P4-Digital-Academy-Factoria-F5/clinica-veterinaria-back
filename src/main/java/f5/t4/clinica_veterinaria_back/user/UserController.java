@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,23 +44,55 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getByID(id));
+   @GetMapping("/{id}")
+public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id, Principal principal) {
+    UserEntity currentUser = userRepository.findByEmail(principal.getName())
+            .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+    boolean isAdmin = currentUser.getRoles().stream()
+            .anyMatch(r -> r.getName().equals("ROLE_ADMIN"));
+
+    if (!isAdmin && !currentUser.getId_user().equals(id)) {
+        throw new RuntimeException("No puedes acceder a otro usuario");
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> updateUser(
-            @PathVariable Long id,
-            @RequestBody UserRequestDTO dto) {
-        return ResponseEntity.ok(userService.updateEntity(id, dto));
+    return ResponseEntity.ok(userService.getByID(id));
+}
+
+   @PutMapping("/{id}")
+public ResponseEntity<UserResponseDTO> updateUser(
+        @PathVariable Long id,
+        @RequestBody UserRequestDTO dto,
+        Principal principal) {
+
+    UserEntity currentUser = userRepository.findByEmail(principal.getName())
+            .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+    boolean isAdmin = currentUser.getRoles().stream()
+            .anyMatch(r -> r.getName().equals("ROLE_ADMIN"));
+
+    if (!isAdmin && !currentUser.getId_user().equals(id)) {
+        throw new RuntimeException("No puedes editar otro usuario");
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteEntity(id);
-        return ResponseEntity.noContent().build();
+    return ResponseEntity.ok(userService.updateEntity(id, dto));
+}
+
+@DeleteMapping("/{id}")
+public ResponseEntity<Void> deleteUser(@PathVariable Long id, Principal principal) {
+    UserEntity currentUser = userRepository.findByEmail(principal.getName())
+            .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+    boolean isAdmin = currentUser.getRoles().stream()
+            .anyMatch(r -> r.getName().equals("ROLE_ADMIN"));
+
+    if (!isAdmin && !currentUser.getId_user().equals(id)) {
+        throw new RuntimeException("No puedes borrar otro usuario");
     }
+
+    userService.deleteEntity(id);
+    return ResponseEntity.noContent().build();
+}
        @GetMapping("/{id}/patients")
     public ResponseEntity<Set<PatientEntity>> getPatientsByUserId(@PathVariable Long id) {
         Optional<UserEntity> userOpt = userRepository.findById(id);
