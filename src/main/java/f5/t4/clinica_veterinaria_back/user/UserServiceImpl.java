@@ -43,31 +43,32 @@ public class UserServiceImpl implements UserService {
                 .map(userMapper::userEntityToUserResponseDto)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
     }
+@Override
+public UserResponseDTO updateEntity(Long id, UserRequestDTO dto) {
+    UserEntity user = userRepository.findById(id)
+              .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
-    @Override
-    public UserResponseDTO updateEntity(Long id, UserRequestDTO dto) {
-        UserEntity user = userRepository.findById(id)
-                  .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+    user.setEmail(dto.email());
+    user.setPassword(passwordEncoder.encode(dto.password()));
 
-        user.setEmail(dto.email());
-        user.setPassword(passwordEncoder.encode(dto.password()));
+    ProfileEntity profile = user.getProfile();
+    profile.setDni(dto.dni());
+    profile.setName(dto.name());
+    profile.setFirstSurname(dto.firstSurname());
+    profile.setSecondSurname(dto.secondSurname());
+    profile.setPhoneNumber(dto.phoneNumber());
 
-        ProfileEntity profile = user.getProfile();
-        profile.setDni(dto.dni());
-        profile.setName(dto.name());
-        profile.setFirstSurname(dto.firstSurname());
-        profile.setSecondSurname(dto.secondSurname());
-        profile.setPhoneNumber(dto.phoneNumber());
-
-        java.util.Set<RoleEntity> roles = dto.roles().stream()
-                .map(roleName -> roleRepository.findByName(roleName)
-                        .orElseThrow(() -> new RoleNotFoundException(roleName)))
-                .collect(Collectors.toSet());
+    // Solo actualiza los roles si dto.roles() no es null
+    if (dto.roles() != null) {
+        Set<RoleEntity> roles = dto.roles().stream()
+            .map(roleName -> roleRepository.findByName(roleName)
+                .orElseThrow(() -> new RoleNotFoundException(roleName)))
+            .collect(Collectors.toSet());
         user.setRoles(roles);
-
-        return userMapper.userEntityToUserResponseDto(userRepository.save(user));
     }
 
+    return userMapper.userEntityToUserResponseDto(userRepository.save(user));
+}
     @Override
     public void deleteEntity(Long id) {
         if (!userRepository.existsById(id)) {
