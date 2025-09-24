@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import f5.t4.clinica_veterinaria_back.role.exceptions.RoleNotFoundException;
+import f5.t4.clinica_veterinaria_back.user.exceptions.UserAccessDeniedException;
 import f5.t4.clinica_veterinaria_back.user.exceptions.UserNotFoundException;
 
 @RestControllerAdvice
@@ -21,6 +22,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<GlobalExceptionResponseDTO> handleUserNotFound(UserNotFoundException ex) {
     return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
+
+    @ExceptionHandler(UserAccessDeniedException.class)
+public ResponseEntity<GlobalExceptionResponseDTO> handleUserAccessDenied(UserAccessDeniedException ex) {
+    return buildResponse(HttpStatus.FORBIDDEN, ex.getMessage());
+}
+
    /*  @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<GlobalExceptionResponseDTO> handlePatientNotFound(PatientNotFoundException ex) {
     return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());

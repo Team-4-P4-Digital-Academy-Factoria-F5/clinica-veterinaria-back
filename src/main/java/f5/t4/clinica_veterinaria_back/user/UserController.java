@@ -8,6 +8,7 @@ import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import f5.t4.clinica_veterinaria_back.implementations.IService;
 import f5.t4.clinica_veterinaria_back.patient.PatientEntity;
 import f5.t4.clinica_veterinaria_back.user.dtos.UserRequestDTO;
 import f5.t4.clinica_veterinaria_back.user.dtos.UserResponseDTO;
+import f5.t4.clinica_veterinaria_back.user.exceptions.UserAccessDeniedException;
 import f5.t4.clinica_veterinaria_back.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -53,7 +55,7 @@ public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id, Princi
             .anyMatch(r -> r.getName().equals("ROLE_ADMIN"));
 
     if (!isAdmin && !currentUser.getId_user().equals(id)) {
-        throw new RuntimeException("No puedes acceder a otro usuario");
+        throw new UserAccessDeniedException("No puedes acceder a otro usuario");
     }
 
     return ResponseEntity.ok(userService.getByID(id));
@@ -72,7 +74,7 @@ public ResponseEntity<UserResponseDTO> updateUser(
             .anyMatch(r -> r.getName().equals("ROLE_ADMIN"));
 
     if (!isAdmin && !currentUser.getId_user().equals(id)) {
-        throw new RuntimeException("No puedes editar otro usuario");
+        throw new UserAccessDeniedException("No puedes editar otro usuario");
     }
 
     return ResponseEntity.ok(userService.updateEntity(id, dto));
@@ -87,7 +89,7 @@ public ResponseEntity<Void> deleteUser(@PathVariable Long id, Principal principa
             .anyMatch(r -> r.getName().equals("ROLE_ADMIN"));
 
     if (!isAdmin && !currentUser.getId_user().equals(id)) {
-        throw new RuntimeException("No puedes borrar otro usuario");
+        throw new UserAccessDeniedException("No puedes borrar otro usuario");
     }
 
     userService.deleteEntity(id);
@@ -103,10 +105,4 @@ public ResponseEntity<Void> deleteUser(@PathVariable Long id, Principal principa
         }
     }
 
-
-
-    @GetMapping("/patients")
-    public void getPatients(Principal principal) {
-        System.out.println(principal.getName());
-    }
 }
