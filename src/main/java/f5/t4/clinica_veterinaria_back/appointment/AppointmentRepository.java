@@ -9,9 +9,11 @@ import org.springframework.data.repository.query.Param;
 
 public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Long> {
     
-    List<AppointmentEntity> findByPatient_IdPatient(Long patientId);
+    @Query("SELECT a FROM AppointmentEntity a WHERE a.patient.id_patient = :patientId")
+    List<AppointmentEntity> findByPatient_IdPatient(@Param("patientId") Long patientId);
     
-    List<AppointmentEntity> findByUser_IdUser(Long userId);
+    @Query("SELECT a FROM AppointmentEntity a WHERE a.user.id_user = :userId")
+    List<AppointmentEntity> findByUser_IdUser(@Param("userId") Long userId);
     
     List<AppointmentEntity> findByStatus(String status);
     
