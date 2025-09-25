@@ -2,6 +2,8 @@ package f5.t4.clinica_veterinaria_back.user;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import f5.t4.clinica_veterinaria_back.profile.ProfileEntity;
 import f5.t4.clinica_veterinaria_back.role.RoleEntity;
 import jakarta.persistence.*;
@@ -37,6 +39,9 @@ public class UserEntity {
 
     //Relación con Pacientes, que nos permite eliminarlos en cascada cuando borramos el user correspondiente,    
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<PatientEntity> patients = new HashSet<>();
 }
+
+
 
