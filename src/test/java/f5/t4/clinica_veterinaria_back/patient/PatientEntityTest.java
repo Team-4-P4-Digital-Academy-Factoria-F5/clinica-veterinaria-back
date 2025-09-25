@@ -13,7 +13,7 @@ public class PatientEntityTest {
         PatientEntity patient = new PatientEntity();
 
         patient.setId_patient(1L);
-        patient.setIdentification_number("ABC123");
+        patient.setIdentificationNumber("ABC123");
         patient.setName("Firulais");
         patient.setImage("image.png");
         patient.setAge(5);
