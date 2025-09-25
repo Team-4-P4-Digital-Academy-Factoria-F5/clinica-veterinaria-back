@@ -54,6 +54,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT, endpoint + "/patients/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, endpoint + "/patients/**").hasAnyRole("USER", "ADMIN")
                         
+                        .requestMatchers(endpoint + "/appointments").permitAll()
+
                         .anyRequest().authenticated())
                 .userDetailsService(jpaUserDetailsService)
                 .httpBasic(withDefaults())
