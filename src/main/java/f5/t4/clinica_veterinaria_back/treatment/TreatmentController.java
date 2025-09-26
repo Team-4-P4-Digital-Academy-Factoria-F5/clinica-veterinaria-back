@@ -21,14 +21,14 @@ public class TreatmentController {
     // /api/treatments/{id} Obtiene un tratamiento concreto por su ID
     @GetMapping("/{id}")
     public ResponseEntity<TreatmentResponseDTO> getTreatmentById(@PathVariable Long id) {
-        TreatmentResponseDTO treatment = treatmentService.getTreatmentById(id);
+        TreatmentResponseDTO treatment = treatmentService.getEntityById(id);
         return ResponseEntity.ok(treatment);
     }
 
     // Obtiene todos los tratamientos de un paciente
     @GetMapping("/patient/{patientId}")
     public ResponseEntity<List<TreatmentResponseDTO>> getTreatmentsByPatient(@PathVariable Long patientId) {
-        List<TreatmentResponseDTO> treatments = treatmentService.getTreatmentsByPatient(patientId);
+        List<TreatmentResponseDTO> treatments = treatmentService.getEntityByPatient(patientId);
         return ResponseEntity.ok(treatments);
     }
 
@@ -38,7 +38,7 @@ public class TreatmentController {
             @PathVariable Long patientId,
             @RequestBody TreatmentRequestDTO dtoRequest) {
 
-        TreatmentResponseDTO newTreatment = treatmentService.createTreatment(patientId, dtoRequest);
+        TreatmentResponseDTO newTreatment = treatmentService.createEntity(patientId, dtoRequest);
         return ResponseEntity.status(201).body(newTreatment);
     }
 }

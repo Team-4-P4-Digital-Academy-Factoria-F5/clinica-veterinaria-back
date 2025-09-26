@@ -4,7 +4,8 @@ import java.util.List;
 
 public interface ITreatmentService <T,S>{
 
-    public List<T> getEntities();
-    public T createEntity(S dto);
+ public List<T> getEntities();
+ public T createEntity (Long ID, S dto);
+ public T getEntityById(Long ID);
     
 }
