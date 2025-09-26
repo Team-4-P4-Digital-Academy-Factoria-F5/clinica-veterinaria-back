@@ -53,7 +53,14 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, endpoint + "/patients").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.PUT, endpoint + "/patients/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, endpoint + "/patients/**").hasAnyRole("USER", "ADMIN")
-                        
+
+                        .requestMatchers(HttpMethod.GET, endpoint + "/appointments/my-appointments").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, endpoint + "/appointments/my-upcoming-appointments").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, endpoint + "/appointments/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, endpoint + "/appointments").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, endpoint + "/appointments/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, endpoint + "/appointments/**").hasAnyRole("USER", "ADMIN")
+
                         .anyRequest().authenticated())
                 .userDetailsService(jpaUserDetailsService)
                 .httpBasic(withDefaults())
