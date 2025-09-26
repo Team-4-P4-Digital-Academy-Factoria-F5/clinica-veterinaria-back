@@ -7,9 +7,5 @@ public record  TreatmentRequestDTO (
 String name,
 String description,
 LocalDateTime treatmentDate,
-Long patientId ) {
-
-    
-
-}
+Long patientId ) {}
 
