@@ -147,15 +147,16 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentService.getAppointmentsByDateRange(startDate, endDate));
     }
 
-    @GetMapping("/upcoming/patient/{patientId}")
-    public ResponseEntity<List<AppointmentResponseDTO>> getUpcomingAppointmentsByPatient(@PathVariable Long patientId) {
-        return ResponseEntity.ok(appointmentService.getUpcomingAppointmentsByPatient(patientId));
-    }
+    // Opcionales para escalar
+    // @GetMapping("/upcoming/patient/{patientId}")
+    // public ResponseEntity<List<AppointmentResponseDTO>> getUpcomingAppointmentsByPatient(@PathVariable Long patientId) {
+    //     return ResponseEntity.ok(appointmentService.getUpcomingAppointmentsByPatient(patientId));
+    // }
 
-    @GetMapping("/upcoming/user/{userId}")
-    public ResponseEntity<List<AppointmentResponseDTO>> getUpcomingAppointmentsByUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(appointmentService.getUpcomingAppointmentsByUser(userId));
-    }
+    // @GetMapping("/upcoming/user/{userId}")
+    // public ResponseEntity<List<AppointmentResponseDTO>> getUpcomingAppointmentsByUser(@PathVariable Long userId) {
+    //     return ResponseEntity.ok(appointmentService.getUpcomingAppointmentsByUser(userId));
+    // }
 
     @GetMapping("/my-appointments")
     public ResponseEntity<List<AppointmentResponseDTO>> getMyAppointments(Principal principal) {
