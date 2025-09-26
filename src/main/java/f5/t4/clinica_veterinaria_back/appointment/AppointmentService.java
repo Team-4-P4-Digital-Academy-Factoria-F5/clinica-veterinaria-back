@@ -6,6 +6,8 @@ import java.util.List;
 import f5.t4.clinica_veterinaria_back.appointment.dtos.AppointmentRequestDTO;
 import f5.t4.clinica_veterinaria_back.appointment.dtos.AppointmentResponseDTO;
 import f5.t4.clinica_veterinaria_back.implementations.IService;
+import f5.t4.clinica_veterinaria_back.appointment.enums.AppointmentStatus;
+
 
 public interface AppointmentService extends IService<AppointmentResponseDTO, AppointmentRequestDTO> {
     
@@ -13,7 +15,7 @@ public interface AppointmentService extends IService<AppointmentResponseDTO, App
     
     List<AppointmentResponseDTO> getAppointmentsByUser(Long userId);
     
-    List<AppointmentResponseDTO> getAppointmentsByStatus(String status);
+    List<AppointmentResponseDTO> getAppointmentsByStatus(AppointmentStatus status);
     
     List<AppointmentResponseDTO> getAppointmentsByType(Boolean type);
     

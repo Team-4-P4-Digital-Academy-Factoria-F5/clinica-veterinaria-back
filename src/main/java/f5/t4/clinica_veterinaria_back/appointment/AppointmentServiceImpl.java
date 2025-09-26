@@ -14,6 +14,7 @@ import f5.t4.clinica_veterinaria_back.patient.exceptions.PatientException;
 import f5.t4.clinica_veterinaria_back.user.UserEntity;
 import f5.t4.clinica_veterinaria_back.user.UserRepository;
 import f5.t4.clinica_veterinaria_back.user.exceptions.UserNotFoundException;
+import f5.t4.clinica_veterinaria_back.appointment.enums.AppointmentStatus;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -111,7 +112,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<AppointmentResponseDTO> getAppointmentsByStatus(String status) {
+    public List<AppointmentResponseDTO> getAppointmentsByStatus(AppointmentStatus status) {
         return appointmentRepository.findByStatus(status).stream()
                 .map(appointmentMapper::toDTO)
                 .toList();

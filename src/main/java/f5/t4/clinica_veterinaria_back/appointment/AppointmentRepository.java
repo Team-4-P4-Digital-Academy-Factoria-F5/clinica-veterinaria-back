@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import f5.t4.clinica_veterinaria_back.appointment.enums.AppointmentStatus;
+
 public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Long> {
     
     @Query("SELECT a FROM AppointmentEntity a WHERE a.patient.id_patient = :patientId")
@@ -15,7 +17,7 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     @Query("SELECT a FROM AppointmentEntity a WHERE a.user.id_user = :userId")
     List<AppointmentEntity> findByUser_IdUser(@Param("userId") Long userId);
     
-    List<AppointmentEntity> findByStatus(String status);
+    List<AppointmentEntity> findByStatus(AppointmentStatus status);
     
     List<AppointmentEntity> findByType(Boolean type);
     

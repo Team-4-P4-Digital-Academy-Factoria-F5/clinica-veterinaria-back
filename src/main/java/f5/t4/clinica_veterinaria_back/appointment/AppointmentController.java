@@ -2,6 +2,7 @@ package f5.t4.clinica_veterinaria_back.appointment;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import f5.t4.clinica_veterinaria_back.appointment.dtos.AppointmentRequestDTO;
 import f5.t4.clinica_veterinaria_back.appointment.dtos.AppointmentResponseDTO;
+import f5.t4.clinica_veterinaria_back.appointment.enums.AppointmentStatus;
 import f5.t4.clinica_veterinaria_back.user.UserEntity;
 import f5.t4.clinica_veterinaria_back.user.UserRepository;
 import f5.t4.clinica_veterinaria_back.user.exceptions.UserAccessDeniedException;
@@ -129,7 +131,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<AppointmentResponseDTO>> getAppointmentsByStatus(@PathVariable String status) {
+    public ResponseEntity<List<AppointmentResponseDTO>> getAppointmentsByStatus(@PathVariable AppointmentStatus status) {
         return ResponseEntity.ok(appointmentService.getAppointmentsByStatus(status));
     }
 
@@ -169,5 +171,13 @@ public class AppointmentController {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
         
         return ResponseEntity.ok(appointmentService.getUpcomingAppointmentsByUser(currentUser.getId_user()));
+    }
+
+    @GetMapping("/status/available")
+    public ResponseEntity<List<String>> getAvailableStatuses() {
+        List<String> statuses = Arrays.stream(AppointmentStatus.values())
+                .map(AppointmentStatus::name)
+                .toList();
+        return ResponseEntity.ok(statuses);
     }
 }

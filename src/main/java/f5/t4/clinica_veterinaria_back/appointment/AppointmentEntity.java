@@ -4,10 +4,13 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import f5.t4.clinica_veterinaria_back.appointment.enums.AppointmentStatus;
 import f5.t4.clinica_veterinaria_back.patient.PatientEntity;
 import f5.t4.clinica_veterinaria_back.user.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -41,8 +44,9 @@ public class AppointmentEntity {
     @Column(columnDefinition = "TEXT")
     private String reason;
 
+    @Enumerated(EnumType.STRING)
     @Column(length = 50)
-    private String status;
+    private AppointmentStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "patient_id", nullable = false)
