@@ -32,6 +32,13 @@ public class PatientController {
         this.service = service;
         this.patientService = patientService;
     }
+
+       @GetMapping("")
+    public List<PatientResponseDTO> index() {
+        return service.getEntities();
+
+    }
+
     @PostMapping("")
     public ResponseEntity<PatientResponseDTO> createEntity(@RequestBody PatientRequestDTO dtoRequest) {
 
