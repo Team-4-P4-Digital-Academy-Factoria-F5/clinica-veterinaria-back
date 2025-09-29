@@ -50,7 +50,8 @@ public class TreatmentServiceImpl implements InterfaceTreatmentService {
 
     @Override
     public List<TreatmentResponseDTO> getEntityByPatient(Long patientId) {
-        return treatmentRepository.findByPatient_IdPatient(patientId)
+        // return treatmentRepository.findByPatient_IdPatient(patientId)
+            return treatmentRepository.findByPatientId(patientId)
                 .stream()
                 .map(TreatmentMapper::toDTO)
                 .toList();
