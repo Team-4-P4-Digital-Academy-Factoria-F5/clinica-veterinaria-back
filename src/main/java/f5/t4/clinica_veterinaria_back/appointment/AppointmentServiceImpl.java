@@ -7,14 +7,15 @@ import org.springframework.stereotype.Service;
 
 import f5.t4.clinica_veterinaria_back.appointment.dtos.AppointmentRequestDTO;
 import f5.t4.clinica_veterinaria_back.appointment.dtos.AppointmentResponseDTO;
+import f5.t4.clinica_veterinaria_back.appointment.enums.AppointmentStatus;
 import f5.t4.clinica_veterinaria_back.appointment.exceptions.AppointmentNotFoundException;
+import f5.t4.clinica_veterinaria_back.email.EmailService;
 import f5.t4.clinica_veterinaria_back.patient.PatientEntity;
 import f5.t4.clinica_veterinaria_back.patient.PatientRepository;
 import f5.t4.clinica_veterinaria_back.patient.exceptions.PatientException;
 import f5.t4.clinica_veterinaria_back.user.UserEntity;
 import f5.t4.clinica_veterinaria_back.user.UserRepository;
 import f5.t4.clinica_veterinaria_back.user.exceptions.UserNotFoundException;
-import f5.t4.clinica_veterinaria_back.appointment.enums.AppointmentStatus;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -25,6 +26,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final PatientRepository patientRepository;
     private final UserRepository userRepository;
     private final AppointmentMapper appointmentMapper;
+    private final EmailService emailService;
 
     @Override
     public List<AppointmentResponseDTO> getEntities() {
@@ -53,7 +55,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setUser(user);
 
         AppointmentEntity savedAppointment = appointmentRepository.save(appointment);
-        return appointmentMapper.toDTO(savedAppointment);
+        AppointmentResponseDTO responseDTO = appointmentMapper.toDTO(savedAppointment);
+        
+        // Enviar email de confirmación
+        emailService.sendAppointmentConfirmation(responseDTO);
+        
+        return responseDTO;
     }
 
     @Override
@@ -86,7 +93,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setUser(user);
 
         AppointmentEntity updatedAppointment = appointmentRepository.save(appointment);
-        return appointmentMapper.toDTO(updatedAppointment);
+        AppointmentResponseDTO responseDTO = appointmentMapper.toDTO(updatedAppointment);
+        
+        // Enviar email de actualización
+        emailService.sendAppointmentUpdate(responseDTO);
+        
+        return responseDTO;
     }
 
     @Override
