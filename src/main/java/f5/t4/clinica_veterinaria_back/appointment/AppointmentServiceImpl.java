@@ -44,6 +44,27 @@ public class AppointmentServiceImpl implements AppointmentService {
             throw new UserNotFoundException("User ID cannot be null");
         }
 
+        // -------------------------------------------------------------------
+        // Lógica para limitar a 10 citas por día
+        // -------------------------------------------------------------------
+        LocalDateTime requestedDatetime = dto.appointmentDatetime();
+        if (requestedDatetime == null) {
+            throw new IllegalArgumentException("Appointment datetime cannot be null");
+        }
+        // Calcular el inicio y el fin del día de la cita solicitada
+        LocalDateTime startOfDay = requestedDatetime.toLocalDate().atStartOfDay();
+        LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1); 
+
+        // Contar las citas para ese día
+        Long appointmentsCount = appointmentRepository.countAppointmentsByDay(startOfDay, endOfDay);
+
+        // Verificar el límite
+        final int DAILY_APPOINTMENT_LIMIT = 10;
+        if (appointmentsCount >= DAILY_APPOINTMENT_LIMIT) {
+            throw new RuntimeException("El límite de " + DAILY_APPOINTMENT_LIMIT + " citas diarias ya está completo para el día " + requestedDatetime.toLocalDate());
+        }
+        // -------------------------------------------------------------------
+
         PatientEntity patient = patientRepository.findById(dto.patientId())
                 .orElseThrow(() -> new PatientException("Paciente no encontrado con id: " + dto.patientId()));
 
