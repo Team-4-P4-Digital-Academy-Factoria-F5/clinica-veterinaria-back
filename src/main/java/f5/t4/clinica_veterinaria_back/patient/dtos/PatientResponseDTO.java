@@ -8,6 +8,7 @@ int age,
 String family,
 String breed,
 String sex,
-Long tutor) {
+Long tutor,
+String tutorFullName) {
 
 }

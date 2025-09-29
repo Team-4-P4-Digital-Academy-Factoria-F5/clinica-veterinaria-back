@@ -12,7 +12,7 @@ import f5.t4.clinica_veterinaria_back.user.UserEntity;
 import f5.t4.clinica_veterinaria_back.user.UserRepository;
 import f5.t4.clinica_veterinaria_back.user.exceptions.UserNotFoundException;
 
-@Service
+@Service("patientService")
 public class PatientServiceImpl implements InterfacePatientService {
     
     private final PatientRepository repository;
