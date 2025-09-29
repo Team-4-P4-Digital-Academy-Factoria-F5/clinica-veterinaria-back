@@ -1,5 +1,6 @@
 package f5.t4.clinica_veterinaria_back.appointment;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import f5.t4.clinica_veterinaria_back.appointment.enums.AppointmentStatus;
 
 public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Long> {
-    
+
     @Query("SELECT a FROM AppointmentEntity a WHERE a.patient.id_patient = :patientId")
     List<AppointmentEntity> findByPatient_IdPatient(@Param("patientId") Long patientId);
     
@@ -37,5 +38,11 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     List<AppointmentEntity> findUpcomingAppointmentsByUser(
         @Param("userId") Long userId, 
         @Param("fromDate") LocalDateTime fromDate
+    );
+
+    @Query("SELECT COUNT(a) FROM AppointmentEntity a WHERE a.appointmentDatetime BETWEEN :startOfDay AND :endOfDay")
+    Long countAppointmentsByDay(
+        @Param("startOfDay") LocalDateTime startOfDay, 
+        @Param("endOfDay") LocalDateTime endOfDay
     );
 }
