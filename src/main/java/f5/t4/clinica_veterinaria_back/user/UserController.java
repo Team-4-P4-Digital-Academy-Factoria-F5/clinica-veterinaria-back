@@ -100,5 +100,12 @@ public ResponseEntity<Void> deleteUser(@PathVariable Long id, Principal principa
             return ResponseEntity.notFound().build();
         }
     }
+    @GetMapping("/me")
+public ResponseEntity<UserResponseDTO> getCurrentUser(Principal principal) {
+    UserEntity user = userRepository.findByEmail(principal.getName())
+        .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+    return ResponseEntity.ok(userService.getByID(user.getId_user()));
+}
+
 
 }
