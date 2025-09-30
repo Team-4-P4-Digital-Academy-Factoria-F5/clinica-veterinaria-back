@@ -1,6 +1,5 @@
 package f5.t4.clinica_veterinaria_back.appointment;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
