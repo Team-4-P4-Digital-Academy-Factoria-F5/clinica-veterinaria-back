@@ -44,4 +44,19 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
         @Param("startOfDay") LocalDateTime startOfDay, 
         @Param("endOfDay") LocalDateTime endOfDay
     );
+
+    /**
+    * Busca citas cuya fecha y hora es anterior a la fecha actual y su estado es PENDIENTE.
+    * Estas son las citas que deben ser marcadas como PASADA.
+    */
+    @Query("SELECT a FROM AppointmentEntity a WHERE a.appointmentDatetime < :currentDateTime AND a.status = 'PENDIENTE'")
+    List<AppointmentEntity> findOverduePendingAppointments(@Param("currentDateTime") LocalDateTime currentDateTime);
+
+    /**
+     * Busca citas cuyo estado es PASADA y la fecha de la cita es anterior a la fecha límite.
+     * Estas son las citas que deben eliminarse.
+     */
+    @Query("SELECT a FROM AppointmentEntity a WHERE a.status = 'PASADA' AND a.appointmentDatetime < :cutoffDate")
+    List<AppointmentEntity> findAppointmentsToDelete(@Param("cutoffDate") LocalDateTime cutoffDate);
+
 }
