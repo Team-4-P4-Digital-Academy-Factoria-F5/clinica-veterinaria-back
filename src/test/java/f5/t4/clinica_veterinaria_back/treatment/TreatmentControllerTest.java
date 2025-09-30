@@ -123,10 +123,50 @@ class TreatmentControllerTest {
     assertThat(response.getBody().get(1).name()).isEqualTo("Desparasitación");
 
     // Verificamos que el service fue llamado una vez
-    verify(treatmentService, times(1)).getEntityByPatient(patientId);
-}
+        verify(treatmentService, times(1)).getEntityByPatient(patientId);
+    }
+    // ID non exist
+    @Test
+    void testGetTreatmentById_NotFound() {
+        Long treatmentId = 99L;
 
+        when(treatmentService.getEntityById(treatmentId)).thenReturn(null);
 
+        ResponseEntity<TreatmentResponseDTO> response = treatmentController.getTreatmentById(treatmentId);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK); // o NOT_FOUND si después lo cambiás
+        assertThat(response.getBody()).isNull();
+
+        verify(treatmentService, times(1)).getEntityById(treatmentId);
+    }
+
+    //Empty List
+    @Test
+    void testGetTreatmentsByPatient_EmptyList() {
+        Long patientId = 5L;
+        when(treatmentService.getEntityByPatient(patientId)).thenReturn(List.of());
+
+        ResponseEntity<List<TreatmentResponseDTO>> response = treatmentController.getTreatmentsByPatient(patientId);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isEmpty();
+    }
+
+    // service return null
+    @Test
+    void testCreateTreatment_NullResponse() {
+        Long patientId = 5L;
+        TreatmentRequestDTO request = new TreatmentRequestDTO("Vacuna", "Vacuna anual", LocalDateTime.now(), patientId);
+
+        when(treatmentService.createEntity(eq(patientId), any())).thenReturn(null);
+
+        ResponseEntity<TreatmentResponseDTO> response = treatmentController.createTreatment(patientId, request);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(response.getBody()).isNull();
+
+        verify(treatmentService, times(1)).createEntity(eq(patientId), any());
+    }
 
 
 }
