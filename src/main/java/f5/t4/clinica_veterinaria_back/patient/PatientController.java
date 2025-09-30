@@ -2,6 +2,7 @@ package f5.t4.clinica_veterinaria_back.patient;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,12 +25,15 @@ public class PatientController {
     private final IService<PatientResponseDTO, PatientRequestDTO> service;
     private final InterfacePatientService patientService;
 
-    public PatientController(IService<PatientResponseDTO, PatientRequestDTO> service, InterfacePatientService patientService) {
+    public PatientController(
+        @Qualifier("patientService") IService<PatientResponseDTO, PatientRequestDTO> service,
+        InterfacePatientService patientService
+    ) {
         this.service = service;
         this.patientService = patientService;
     }
 
-    @GetMapping("")
+       @GetMapping("")
     public List<PatientResponseDTO> index() {
         return service.getEntities();
 

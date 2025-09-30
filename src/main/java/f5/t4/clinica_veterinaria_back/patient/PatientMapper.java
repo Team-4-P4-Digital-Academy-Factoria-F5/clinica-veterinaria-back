@@ -2,6 +2,7 @@ package f5.t4.clinica_veterinaria_back.patient;
 
 import f5.t4.clinica_veterinaria_back.patient.dtos.PatientRequestDTO;
 import f5.t4.clinica_veterinaria_back.patient.dtos.PatientResponseDTO;
+import f5.t4.clinica_veterinaria_back.profile.ProfileEntity;
 
 public class PatientMapper {
     
@@ -17,8 +18,22 @@ public class PatientMapper {
         return patient;
     }
 
-    public static PatientResponseDTO toDTO(PatientEntity entity) {
-        PatientResponseDTO dtoResponse = new PatientResponseDTO(
+public static PatientResponseDTO toDTO(PatientEntity entity) {
+        Long tutorId = null;
+        String tutorFullName = null;
+
+        if (entity.getTutor() != null) {
+            tutorId = entity.getTutor().getId_user();
+
+            // Accedemos al perfil para obtener el nombre completo
+            if (entity.getTutor().getProfile() != null) {
+                ProfileEntity profile = entity.getTutor().getProfile();
+                tutorFullName = profile.getName() + " " + profile.getFirstSurname() + " " + profile.getSecondSurname();
+            }
+        }
+
+        // Retornamos el DTO con todos los campos, incluyendo tutor y su nombre completo
+        return new PatientResponseDTO(
             entity.getId_patient(),
             entity.getIdentificationNumber(),
             entity.getName(),
@@ -27,10 +42,9 @@ public class PatientMapper {
             entity.getFamily(),
             entity.getBreed(),
             entity.getSex(),
-            entity.getTutor() != null ? entity.getTutor().getId_user() : null
+            tutorId,
+            tutorFullName
         );
-
-        return dtoResponse;
     }
 
 }
