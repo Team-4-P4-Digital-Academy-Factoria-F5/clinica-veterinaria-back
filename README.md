@@ -170,11 +170,9 @@ GET  /api/v1/login     - Inicio de sesión
 
 ### Postman
 
-<img width="144" height="251" alt="image" src="https://github.com/user-attachments/assets/78951a5e-d7b3-4010-8760-249cf9819c7a" />
+<img width="216" height="393" alt="Captura de pantalla 2025-10-01 a las 18 15 58" src="https://github.com/user-attachments/assets/54e3f8ec-439e-45b7-8ea6-9eedd49cab9a" />
+<img width="216" height="393" alt="Captura de pantalla 2025-10-01 a las 18 16 08" src="https://github.com/user-attachments/assets/5b020378-d436-4c63-92d6-9bd73389a46c" />
 
-<img width="143" height="248" alt="image" src="https://github.com/user-attachments/assets/29015d32-6756-4c10-8ebf-3761b0eb02ed" />
-
-<img width="283" height="1014" alt="imagen (1)" src="https://github.com/user-attachments/assets/043ef7e2-67ef-42c7-adb2-c3375b9036b8" />
 
 ## ⚙️ Configuración
 
