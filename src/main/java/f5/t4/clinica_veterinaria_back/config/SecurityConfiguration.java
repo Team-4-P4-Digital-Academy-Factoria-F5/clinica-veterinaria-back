@@ -64,7 +64,7 @@ public class SecurityConfiguration {
 
                         .anyRequest().authenticated())
                 .userDetailsService(jpaUserDetailsService)
-                .httpBasic(httpBasic -> httpBasic.disable())
+                .httpBasic(withDefaults())
                 .logout(logout -> logout
                         .logoutUrl(endpoint + "/logout")
                         .invalidateHttpSession(true)
