@@ -172,11 +172,7 @@ GET  /api/v1/login     - Inicio de sesión
 
 <img width="144" height="251" alt="image" src="https://github.com/user-attachments/assets/78951a5e-d7b3-4010-8760-249cf9819c7a" />
 
-<img width="143" height="253" alt="image" src="https://github.com/user-attachments/assets/258661bc-c642-44d7-aa6a-903871fbccd2" />
-
-### Swagger
-
-
+<img width="143" height="248" alt="image" src="https://github.com/user-attachments/assets/29015d32-6756-4c10-8ebf-3761b0eb02ed" />
 
 ## ⚙️ Configuración
 
