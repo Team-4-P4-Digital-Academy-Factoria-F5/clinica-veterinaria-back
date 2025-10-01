@@ -6,6 +6,7 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import f5.t4.clinica_veterinaria_back.appointment.AppointmentEntity;
+import f5.t4.clinica_veterinaria_back.treatment.TreatmentEntity;
 import f5.t4.clinica_veterinaria_back.user.UserEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -52,4 +53,8 @@ public class PatientEntity {
     @JsonBackReference("patient-appointments")
     private Set<AppointmentEntity> appointments = new HashSet<>();
     
+    @OneToMany(mappedBy ="patient", cascade = CascadeType.ALL, orphanRemoval = true )
+    @JsonBackReference("patient-treatments")
+    private Set<TreatmentEntity> treatments = new HashSet<>();
+
 }
