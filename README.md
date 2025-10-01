@@ -174,6 +174,8 @@ GET  /api/v1/login     - Inicio de sesión
 
 <img width="143" height="248" alt="image" src="https://github.com/user-attachments/assets/29015d32-6756-4c10-8ebf-3761b0eb02ed" />
 
+<img width="283" height="1014" alt="imagen (1)" src="https://github.com/user-attachments/assets/043ef7e2-67ef-42c7-adb2-c3375b9036b8" />
+
 ## ⚙️ Configuración
 
 ### application.properties
