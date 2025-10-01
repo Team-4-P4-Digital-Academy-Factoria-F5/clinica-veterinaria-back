@@ -301,6 +301,9 @@ docker compose up
 
 Cobertura de testing
 
+<img width="359" height="686" alt="Captura de pantalla 2025-10-01 a las 17 57 04" src="https://github.com/user-attachments/assets/735164a8-925f-425e-b7c3-fd2c3958ecee" />
+<img width="359" height="371" alt="Captura de pantalla 2025-10-01 a las 17 57 23" src="https://github.com/user-attachments/assets/498770ff-9415-4392-bb0c-dd9909be37b2" />
+
 
 
 ## 📝 Licencia
