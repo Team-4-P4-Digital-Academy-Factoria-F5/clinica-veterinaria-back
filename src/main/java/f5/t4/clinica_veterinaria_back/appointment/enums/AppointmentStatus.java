@@ -20,7 +20,6 @@ public enum AppointmentStatus {
         return displayName;
     }
 
-    // Método útil para convertir desde string (case-insensitive)
     public static AppointmentStatus fromString(String status) {
         if (status == null) {
             return null;
