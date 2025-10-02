@@ -20,15 +20,11 @@ public class TreatmentServiceImpl implements InterfaceTreatmentService {
         this.patientRepository = patientRepository;
     }
 
-    // -------------------------
-    // Métodos de InterfaceTreatmentService (específicos)
-    // -------------------------
-
-    // Dentro de TreatmentServiceImpl
+  
 
     @Override
     public List<TreatmentResponseDTO> getEntities() {
-        // Implementación para obtener TODOS los tratamientos (sin filtrar por paciente)
+        
         return treatmentRepository.findAll()
                 .stream()
                 .map(TreatmentMapper::toDTO)
@@ -62,7 +58,7 @@ public class TreatmentServiceImpl implements InterfaceTreatmentService {
         TreatmentEntity treatment = treatmentRepository.findById(treatmentId)
             .orElseThrow(() -> new RuntimeException("Tratamiento no encontrado"));
 
-    // Seguridad extra: paciente nunca debería ser null, pero por si acaso
+
     Long patientId = treatment.getPatient() != null ? treatment.getPatient().getId_patient() : null;
 
     return new TreatmentResponseDTO(

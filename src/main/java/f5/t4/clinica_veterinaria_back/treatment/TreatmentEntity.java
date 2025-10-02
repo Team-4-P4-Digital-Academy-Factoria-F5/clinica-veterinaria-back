@@ -38,6 +38,6 @@ public class TreatmentEntity {
     // Relación N:1 con PatientEntity
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_patient", nullable = false)
-    @JsonBackReference // no sé si es necesario
+    @JsonBackReference 
     private PatientEntity patient;
 }

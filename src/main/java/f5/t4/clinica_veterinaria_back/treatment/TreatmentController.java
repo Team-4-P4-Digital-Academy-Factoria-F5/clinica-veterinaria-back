@@ -25,15 +25,13 @@ public class TreatmentController {
         return ResponseEntity.ok(treatment);
     }
 
-    // Obtiene todos los tratamientos de un paciente
-    //Esto tiene que quedar si no no funciona el postman
+
     @GetMapping("/patient/{patientId}")
     public ResponseEntity<List<TreatmentResponseDTO>> getTreatmentsByPatient(@PathVariable Long patientId) {
         List<TreatmentResponseDTO> treatments = treatmentService.getEntityByPatient(patientId);
         return ResponseEntity.ok(treatments);
     }
 
-    // Crea un nuevo tratamiento asociado a un paciente
     @PostMapping("/patient/{patientId}")
     public ResponseEntity<TreatmentResponseDTO> createTreatment(
             @PathVariable Long patientId,
